@@ -66,7 +66,9 @@ function parseConfig(definition, config) {
 
 _.extend(this, {
     // these styles must be translated into real tss
-    // Array contains a definition of styles names
+    /* Array contains a definition of styles names
+     * "Original style name": "#ViewID.property"
+      */
     definition: {
         // Change one property
         "text": "#label.text", // warning: #label.font.fontSize

@@ -8,3 +8,4 @@ _.extend(this, {
 function onClick(e) {
     Ti.API.info("Hello world!");
 }
+function onProfile(e) {};

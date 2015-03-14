@@ -1,0 +1,12 @@
+<Alloy>
+    <View id="container" class="headerWrap wrapper" onClick="onClick">
+        <View class="avatarWrap">
+            <ImageView id="avatar" />
+        </View>
+        <View id="separator" class="wrapper" />
+        <View class="profileWrap wrapper">
+            <Label id="name" class="profile"></Label>
+            <Label id="description" class="profile"></Label>
+        </View>
+    </View>
+</Alloy>

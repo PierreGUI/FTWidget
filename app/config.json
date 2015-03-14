@@ -8,6 +8,7 @@
 	"os:ios": {},
 	"os:mobileweb": {},
 	"dependencies": {
-		"FWidget":"1.0"
+		"FWidget":"1.0",
+		"ProfileTile":"1.0"
 	}
 }
