@@ -11,4 +11,4 @@
 // Alloy.Globals.someGlobalFunction = function(){};
 
 // Configure Alloy to call widget's construct
-var libWidget = require("libWidget");
+var libWidget = require("libWidget").init();
