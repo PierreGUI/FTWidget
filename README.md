@@ -36,3 +36,46 @@ Here is a sample of the TSS you can apply:
 }
 ```
 
+## How it works
+In the Widget, when extending local context you can define the `definition` object. It contains rules describing how to dispatch TSS properties from controller over Widget's views:
+```
+_.extend(this, {
+    /* Array contains a definition of styles names
+     * "Original style name": "#ViewID.property"
+     */
+    definition: {
+
+        // Change one property
+        "text": "#label.text",
+        "borderColor": "#border.backgroundColor",
+        "backgroundColor": "#inner.backgroundColor",
+
+        // Change an array of properties
+        "borderRadius": ["#inner.borderRadius", "#border.borderRadius"],
+
+        // Apply a function, takes input as parameter
+        "enabled": function(object, rule, boolean){
+            return ["#border.opacity", boolean?1:0.5]; // RETURN ARRAY [rules, input]
+        },
+
+        // Apply style calculated from a fonction taking arg input
+        "buttonType": {
+            "#border.backgroundColor": function(type){
+                var colors = {
+                    blue: "#2980b9",
+                    green: "#27ae60",
+                    red: "#c0392b"
+                };
+                return colors[type];
+            },
+            "#inner.backgroundColor": function(type){
+                var colors = {
+                    blue: "#3498db",
+                    green:"#2ecc71",
+                    red: "#e74c3c"
+                };
+                return colors[type];
+            },
+        }
+    },
+```
