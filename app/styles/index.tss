@@ -1,15 +1,31 @@
+"Window": {
+	backgroundColor:"white",
+}
 ".container": {
-	backgroundColor:"white"
-}
-
-"Label": {
-	width: Ti.UI.SIZE,
+	layout: "vertical",
 	height: Ti.UI.SIZE,
-	color: "#000"
+	width: Ti.UI.FILL,
+	right: 10, left: 10
 }
 
-"#label": {
-	font: {
-		fontSize: 12
-	}
+"#button0": {
+    top: 20,
+    text: "Button one",
+    buttonType: "red",
+    borderRadius: 5,
+    enabled: true,
+}
+"#button1": {
+    top: 20,
+    text: "Button two",
+    buttonType: "blue",
+    borderRadius: 5,
+    enabled: true,
+}
+"#button2": {
+    top: 20,
+    text: "Button three",
+    buttonType: "green",
+    borderRadius: 5,
+    enabled: true,
 }
