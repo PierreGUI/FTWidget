@@ -1,0 +1,7 @@
+<Alloy>
+    <View id="border" class="wrapper">
+        <View id="inner" class="wrapper" onClick="onClick" >
+            <Label id="label" />
+        </View>
+    </View>
+</Alloy>
