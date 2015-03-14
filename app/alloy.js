@@ -9,3 +9,6 @@
 // object. For example:
 //
 // Alloy.Globals.someGlobalFunction = function(){};
+
+// Configure Alloy to call widget's construct
+var libWidget = require("libWidget");

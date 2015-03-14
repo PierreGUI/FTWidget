@@ -1,4 +1,5 @@
-var TAG = "testWidget";
+var args = arguments[0],
+    TAG = "testWidget";
 
 function parseStyle(object, rules, input) {
     // Change one property from string
@@ -21,7 +22,7 @@ function parseStyle(object, rules, input) {
     // Call a fonction taking input style as a param, and returns rules
     else if(_.isFunction(rules)) {
         Ti.API.info(TAG, "parseStyle function", input);
-        return parseStyle(_.union([object], rules(object, rules, input)));
+        return parseStyle.apply(null, _.union([object], rules(object, rules, input)));
     }
     // Change an array of properties
     else if(_.isArray(rules)) {
@@ -71,12 +72,15 @@ _.extend(this, {
         "text": "#label.text", // warning: #label.font.fontSize
         "borderColor": "#border.backgroundColor",
         "backgroundColor": "#inner.backgroundColor",
+
         // Change an array of properties
         "borderRadius": ["#inner.borderRadius", "#border.borderRadius"],
+
         // Apply a function, takes input as parameter
         "enabled": function(object, rule, boolean){
             return ["#border.opacity", boolean?1:0.5]; // RETURN ARRAY [rules, input]
         },
+
         // Apply style calculated from a fonction taking arg input
         "buttonType": {
             "#border.backgroundColor": function(type){
@@ -113,12 +117,14 @@ _.extend(this, {
     },
 
     destruct: function() {
-        $.off();
+        $.off("click");
     }
 });
 
 function onClick(evt) {
+    // Trigger Backbone event
     $.trigger("click", evt);
+    // Animation on opacity
     var opacity = $.border.opacity;
     $.border.opacity = 0.5;
     $.getView().animate(Ti.UI.createAnimation({
