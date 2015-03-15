@@ -17,8 +17,7 @@ _.extend(this, {
         // Change an array of properties
         "borderRadius": ["#container.borderRadius", "#avatar.borderRadius"],
 
-        // Apply a function, takes input as parameter
-        "roundImage": function(object, rule, boolean){
+        "roundImage": function(boolean){
             return ["#avatar.borderRadius", boolean?25:0]; // RETURN ARRAY [rules, input]
         },
 

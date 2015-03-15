@@ -52,8 +52,14 @@ var parseStyle = function(object, rules, input) {
             splited = rules.split("."),
             id = splited.shift(),
             attributes = splited.join("."); // TODO: does this work on a 2 levels context ?
-            attribute = {},
-        attribute[attributes] = input
+            attribute = {};
+        if(_.isObject(input)) {
+            // The input might be a whole object (attributes)
+            attribute = input;
+        } else {
+            // Or a simple attribute
+            attribute[attributes] = input;
+        }
         // There might already be rules for this id
         if(object.hasOwnProperty(id)) {
             return _.extend(object[id], attribute);
@@ -65,7 +71,7 @@ var parseStyle = function(object, rules, input) {
     // Call a fonction taking input style as a param, and returns rules
     else if(_.isFunction(rules)) {
         Ti.API.info(TAG, "parseStyle function", input);
-        return parseStyle.apply(null, _.union([object], rules(object, rules, input)));
+        return parseStyle.apply(null, _.union([object], rules(input)));
     }
     // Change an array of properties
     else if(_.isArray(rules)) {

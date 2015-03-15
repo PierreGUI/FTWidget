@@ -79,7 +79,7 @@ _.extend(this, {
         "borderRadius": ["#inner.borderRadius", "#border.borderRadius"],
 
         // Apply a function, takes input as parameter
-        "enabled": function(object, rule, boolean){
+        "enabled": function(boolean){
             return ["#border.opacity", boolean?1:0.5]; // RETURN ARRAY [rules, input]
         },
 
