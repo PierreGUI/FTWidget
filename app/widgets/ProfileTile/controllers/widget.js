@@ -6,15 +6,17 @@ _.extend(this, {
     // these styles must be translated into real tss
     /* Array contains a definition of styles names
      * "Original style name": "#ViewID.property"
-      */
+     */
+    // TODO: move definition to TSS?
+    // TODO: use TSS in definition?
     definition: {
-        // Change one property
-        "image": "#avatar.image", // warning: #label.font.fontSize
-        "backgroundColor": "#container.backgroundColor",
+        // Note: .text is optionnal by giving an object as input
         "name": "#name.text",
         "description": "#description.text",
-
-        // Change an array of properties
+        "image": "#avatar.image",
+        "backgroundColor": "#container.backgroundColor",
+        "borderColor": "#container.borderColor",
+        "separatorColor": "#separator.backgroundColor",
         "borderRadius": ["#container.borderRadius", "#avatar.borderRadius"],
 
         "roundImage": function(boolean){
@@ -22,29 +24,36 @@ _.extend(this, {
         },
 
         // Apply style calculated from a fonction taking arg input
-        //     "#border.backgroundColor": function(type){
-        //         var colors = {
-        //             blue: "#2980b9",
-        //             green: "#27ae60",
-        //             red: "#c0392b"
-        //         };
-        //         return colors[type];
-        //     },
-        //     "#inner.backgroundColor": function(type){
-        //         var colors = {
-        //             blue: "#3498db",
-        //             green:"#2ecc71",
-        //             red: "#e74c3c"
-        //         };
-        //         return colors[type];
-        //     },
-        // }
+        "tileType": {
+            "#border.backgroundColor": function(type){
+                var colors = {
+                    blue: "#2980b9",
+                    green: "#27ae60",
+                    red: "#c0392b"
+                };
+                return colors[type];
+            },
+            "#inner.backgroundColor": function(type){
+                var colors = {
+                    blue: "#3498db",
+                    green:"#2ecc71",
+                    red: "#e74c3c"
+                };
+                return colors[type];
+            },
+        }
     },
 
     construct: function( config ) {
         // TODO: call librairie function with arguments:
         // container, config, definitions
         $.container.applyProperties(libWidget.parseConfig(this, config, $.definition));
+
+        // TEST: write rules from TSS (pb: functions)
+        // var def = $.createStyle({
+        //     id: "definition"
+        // });
+        // Ti.API.debug(TAG, def);
     },
 
     addEventListener: function(type, callback) {

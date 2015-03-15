@@ -3,23 +3,9 @@
     height: Ti.UI.SIZE
 },
 "#container": {
-    backgroundColor: "#ecf0f1"
+    backgroundColor: "#ecf0f1",
+    borderColor: "#bdc3c7"
 },
-
-"#label": {
-    width: Ti.UI.FILL,
-    height: Ti.UI.SIZE,
-    top: 5, bottom: 5,
-    left: 5, right: 5,
-    color: "white",
-    font: {
-        "fontSize": 20,
-        "fontFamily": "Helvetica Neue"
-    },
-    textAlign: 'center'
-}
-
-/* HEADER */
 ".headerWrap": {
     height: 60,
     width: Ti.UI.FILL,
@@ -37,9 +23,10 @@
 },
 "#separator": {
     top: 5, bottom: 5,
+    left: 5, right: 5,
     height: 50, width: 1,
-    opacity: 0.75,
-    backgroundColor: "#bdc3c7"
+    backgroundColor: "#bdc3c7",
+    opacity: 0.75
 }
 ".profileWrap": {
     height: Ti.UI.SIZE,
@@ -50,21 +37,25 @@
     width: Ti.UI.FILL,
     height: Ti.UI.SIZE,
     top:1, bottom: 1,
-    left: 10, right: 5,
-    textAlign: 'left'
-},
-"#name": {
-    font: {
-        "fontSize": 12,
-        "fontFamily": "Helvetica Neue"
-    },
-    color: "#2980b9"
-},
-"#description": {
-    top: 2,
+    left: 5, right: 5,
+    textAlign: 'left',
     font: {
         "fontSize": 10,
         "fontFamily": "Helvetica Neue"
     },
     color: "#7f8c8d"
+},
+"#name": {},
+"#description": {
+    top: 2,
 }
+// TEST: write rules from TSS (pb: functions)
+"#definition": {
+    "image": "#avatar.image",
+    "backgroundColor": "#container.backgroundColor",
+    "borderColor": "#container.borderColor",
+    "separatorColor": "#separator.backgroundColor",
+    "name": "#name.text",
+    "description": "#description.text",
+    "borderRadius": ["#container.borderRadius", "#avatar.borderRadius"]
+},
