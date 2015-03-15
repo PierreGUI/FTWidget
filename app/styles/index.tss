@@ -8,34 +8,41 @@
 	right: 10, left: 10
 }
 
+".button": {
+    top: 10,
+    borderRadius: 5
+}
 "#button0": {
-    top: 20,
     text: "Button one",
     buttonType: "red",
-    borderRadius: 5,
     enabled: true,
 }
 "#button1": {
-    top: 20,
     text: "Button two",
     buttonType: "blue",
-    borderRadius: 5,
     enabled: false,
 }
 "#button2": {
-    top: 20,
     text: "Button three",
     buttonType: "green",
-    borderRadius: 5,
     enabled: true,
 }
 
 "#profile": {
-    top: 40,
+    top: 20,
 	left: 10, right: 10,
-    name: "Profile tile",
+    name: {
+		text: "Profile tile",
+		color: "#2980b9",
+		font: {
+			"fontSize": 12,
+			"fontFamily": "Helvetica Neue"
+		}
+	},
     description: "Sample tile giving details about user.\nOr that could be a chat bubble!",
     image: "http://www.clostridia.net/clospore/images/Blank_profile_male.jpg",
 	roundImage: true,
-	imageAlign: "left" // TODO
+	borderColor: "#dbe0e0",
+	separatorColor: "#dbe0e0"
+	/*backgroundColor: "#ecf0f1",*/
 }

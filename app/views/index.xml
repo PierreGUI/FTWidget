@@ -1,9 +1,9 @@
 <Alloy>
 	<Window>
 		<View class="container">
-			<Widget src="FWidget" id="button0" onClick="onClick" />
-			<Widget src="FWidget" id="button1" onClick="onClick" />
-			<Widget src="FWidget" id="button2" onClick="onClick" />
+			<Widget src="FWidget" id="button0" class="button" nClick="onClick" />
+			<Widget src="FWidget" id="button1" class="button" nClick="onClick" />
+			<Widget src="FWidget" id="button2" class="button" nClick="onClick" />
 
 			<Widget src="ProfileTile" id="profile" onClick="onProfile" />
 		</View>
