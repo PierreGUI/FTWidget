@@ -1,10 +1,21 @@
-# FWidget
+# FTWidget
 A small framework to create and customise Alloy Widgets from controller
 
 **Example:** create a button and attach custom styles.
-![alt text](https://github.com/PierreGUI/FWidget/blob/master/documentation/screen0.png "Logo Title Text 1")
+
+![alt text](https://github.com/PierreGUI/FTWidget/blob/master/documentation/screen0.png "Logo Title Text 1")
 
 ## How to install
+
+# Submodules
+Some demo widget can require git submodules, after cloning:
+```
+cd FTWidget
+git submodule init
+git submodule update
+```
+
+(Thanks @timanrebel)
 
 In your `app/alloy.js` add a line to have Alloy calling the `construct` method of the widgets automatically:
 ```
@@ -12,16 +23,16 @@ In your `app/alloy.js` add a line to have Alloy calling the `construct` method o
 var libWidget = require("libWidget");
 ```
 
-Copy example `FWidget` folder in `widgets` folder and add to your `config.json`:
+Copy example `FTWidget` folder in `widgets` folder and add to your `config.json`:
 ```
 "dependencies": {
-	"FWidget":"1.0"
+	"FTWidget":"1.0"
 }
 ```
 
 You can add the widget in any `View.xml` (except ListViews :p):
 ```
-<Widget src="FWidget" id="example" onClick="onClick" />
+<Widget src="FTWidget" id="example" onClick="onClick" />
 ```
 
 Here is a sample of the TSS you can apply:
