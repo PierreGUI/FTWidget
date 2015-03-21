@@ -1,0 +1,13 @@
+{
+	"id": "ChatBar",
+	"name": "ChatBar",
+	"description" : "Customizable widget example",
+	"author": "",
+	"version": "1",
+	"copyright":"Copyright (c) 2015",
+	"license":"Apache License, Version 2.0",
+	"min-alloy-version": "1.5",
+	"min-titanium-version":"3.5",
+	"tags":"",
+	"platforms":"android,ios"
+}

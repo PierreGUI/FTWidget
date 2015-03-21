@@ -1,0 +1,43 @@
+".wrapper": {
+    width: Ti.UI.SIZE,
+    height: Ti.UI.SIZE
+},
+"#container": {
+    backgroundColor: "#ecf0f1",
+    borderColor: "#bdc3c7"
+},
+
+".field": {
+    font: {
+        "fontSize": 14,
+        "fontFamily": "Helvetica Neue"
+    },
+    borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
+    backgroundColor: "#fff",
+    color: "#336699",
+    width: Ti.UI.FILL,
+    height: Ti.UI.SIZE,
+    right: 80,
+    top:10, bottom: 10,
+    left: 10
+},
+"#message[platform=ios]": {
+    scrollable: true,
+    suppressReturn: false,
+    borderColor: "#3498db",
+    borderRadius: 3
+},
+
+".buttonWrap": {
+    right: 0
+}
+
+"#send": {
+    width: 60,
+    height: 30,
+    right: 10,
+    font: {
+        "fontSize": 20,
+        "fontFamily": "Helvetica Neue"
+    }
+},

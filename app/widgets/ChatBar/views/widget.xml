@@ -1,0 +1,11 @@
+<Alloy>
+    <View id="container" class="barWrap wrapper">
+        <View class="fieldWrap wrapper">
+            <Widget src="rebel.TextArea" class="field" id="message" />
+        </View>
+        <View id="separator" class="wrapper" />
+        <View class="buttonWrap wrapper">
+            <Button id="send" onClick="onClick" />
+        </View>
+    </View>
+</Alloy>

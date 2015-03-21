@@ -9,6 +9,8 @@
 	"os:mobileweb": {},
 	"dependencies": {
 		"FWidget":"1.0",
-		"ProfileTile":"1.0"
+		"ProfileTile":"1.0",
+		"ChatBar":"1.0",
+		"rebel.TextArea":"1.2"
 	}
 }

@@ -6,6 +6,8 @@
 			<Widget src="FWidget" id="button2" class="button" nClick="onClick" />
 
 			<Widget src="ProfileTile" id="profile" onClick="onProfile" />
+
 		</View>
+		<Widget src="ChatBar" id="chatbar" onClick="onClick" />
 	</Window>
 </Alloy>
