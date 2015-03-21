@@ -52,10 +52,8 @@
 // TEST: write rules from TSS (pb: functions)
 "#definition": {
     "image": "#avatar.image",
-    "backgroundColor": "#container.backgroundColor",
-    "borderColor": "#container.borderColor",
     "separatorColor": "#separator.backgroundColor",
     "name": "#name.text",
     "description": "#description.text",
-    "borderRadius": ["#container.borderRadius", "#avatar.borderRadius"]
+    "avatarRadius": "#avatar.borderRadius",
 },
