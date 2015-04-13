@@ -1,69 +1,127 @@
-var TAG = "libWidget";
-var parseStyle = function(object, rules, input) {
-    // Change one property from string
-    if(_.isString(rules)) {
-        Ti.API.info(TAG, "parseStyle string", rules, input);
-        var update = {},
-            splited = rules.split("."),
-            id = splited.shift(),
-            attributes = splited.join("."); // TODO: does this work on a 2 levels context ?
-            attribute = {};
-        if(_.isObject(input)) {
-            // The input might be a whole object (attributes)
-            attribute = input;
-        } else {
-            // Or a simple attribute
-            attribute[attributes] = input;
-        }
-        // There might already be rules for this id
-        if(object.hasOwnProperty(id)) {
-            return _.extend(object[id], attribute);
-        } else {
-            update[id] = attribute;
-            return _.extend(object, update);
-        }
-    }
-    // Call a fonction taking input style as a param, and returns rules
-    else if(_.isFunction(rules)) {
-        Ti.API.info(TAG, "parseStyle function", input);
-        return parseStyle.apply(null, _.union([object], rules(input)));
-    }
-    // Change an array of properties
-    else if(_.isArray(rules)) {
-        Ti.API.info(TAG, "parseStyle array", rules, input);
-        _.each(rules, function(rule){
-            return parseStyle(object, rule, input);
-        });
-    }
-    // Object: call fonction and apply result as input
-    else if(_.isObject(rules)) {
-        Ti.API.info(TAG, "parseStyle Object", rules, input);
-        _.each(rules, function(rule, key){
-            if(_.isFunction(rule)) {
-                parseStyle(object, key, rule([input]));
-            }
-        });
-    } else {
-        Ti.API.error(TAG, "parseStyle failed with", object, rules, input);
-    }
-}
+var LibWidget = function () {
+    this.TAG = "libWidget";
+    this.styleProperties = {};
+    this.rules = {};
+};
 
-exports.parseConfig = function(widget, config, definition) {
-    Ti.API.debug(TAG, "parseConfig", definition, config);
-    var styles = {};
-    if(_.isObject(definition) && _.isObject(config)) {
-        _.each(config, function(value, key){
-            if(definition.hasOwnProperty(key)) {
-                parseStyle(styles, definition[key], value);
-                delete config[key];
-            } else {
-                Ti.API.error(TAG, "parseConfig unknown rule", key);
+LibWidget.prototype = {
+    _applyRule: function (ruleId, inputValue) {
+        /**
+         * Apply a rule once the input value is known.
+         * @param {str} ruleId The rule's public identifier; should correspond to a previously
+         *  defined rule.
+         * @param {str} inputValue The value read from the config file that has to be set.
+         * @return {boolean} true if the rule exist and have been applied, false otherwise.
+         * */
+        /* Grab the related rule, which is an array of either properties or functions. */
+        if (!_.has(this.rules, ruleId)) { return false; }
+        Ti.API.debug(this.TAG, "Apply rule", ruleId, JSON.stringify(inputValue));
+        var rule = this.rules[ruleId];
+        //Ti.API.debug(this.TAG, "Rule targets => ", rule);
+        /* Browse each target of the rule to build corresponding property */
+        _.each(rule, function (target) {
+            Ti.API.debug(this.TAG, "Rule's target", target);
+            /* Basic case, target is a string which represent the corresponding property to set */
+            if (_.isString(target)) {
+                var elementId = target.match(/^(#[^\.]+)\./)[1],
+                    propertyChain = target.split(elementId)[1].substr(1);
+                this.setProperty(elementId, propertyChain, inputValue);
+            } else if (_.isFunction(target)) {
+                /* If the target is a function, then, just execute the function; The function should be
+                 * in charge of declaring properties if any. */
+                target(inputValue);
             }
+        }, this);
+        return true;
+    },
+
+    parseConfig: function (widget, config) {
+        Ti.API.debug(this.TAG, "parseConfig", config);
+        if (_.isObject(config)) {
+            _.each(config, function (value, key) {
+                if (this._applyRule(key, value)) { delete config[key]; }
+            }, this);
+        } else {
+            Ti.API.error(this.TAG, "parseConfig failed with", config);
+        }
+        Ti.API.debug(this.TAG, "parseConfig processed styles", this.styleProperties);
+        Ti.API.error(this.TAG, JSON.stringify(this.styleProperties));
+        widget.updateViews(this.styleProperties);
+        this.reset();
+        return config;
+    },
+
+    addRule: function (publicIdentifier, target) {
+        /**
+        * Add a rule to the rules set;
+        * @param {str} publicIdentifier The id use to access an internal style property in the module
+        * @param {mixed} target The targeted property in the widget or a  process/function that
+        *   would rather handle the property value into some special treatment instead of blindy bind
+        *   it to a targetted identifier.
+        * */
+        //Ti.API.debug(this.TAG, "Adding rule to the set", publicIdentifier, target);
+        if (!_.has(this.rules, publicIdentifier)) { this.rules[publicIdentifier] = []; }
+        this.rules[publicIdentifier] = this.rules[publicIdentifier].concat(_.flatten([target]));
+    },
+
+    addRules: function (rules) {
+         /**
+         * Used to define several rules in one call. See addRule for more details.
+         * @param {Object} rules All rules to define. Keys will be used as public identifier, and
+         *  values as targets.
+         */
+        _.each(rules, function (target, id) { this.addRule(id, target); }, this);
+    },
+
+    setProperty: function (id, propertyChain, value) {
+        /**
+         * Add a new style property to the list.
+         * @param {str} id The property id, as referenced in the View.
+         * @param {str} propertyChain The property that have to be set. Might be a nested
+         *  property such as my.nested.property
+         * @value {mixed} value The value that has to be set, str or Number.
+         */
+
+        /* Properties might be simple such as 'backgroundColor', or more complex such as
+         * 'font.fontFamily'; In both case, we have to re-build a corresponding object */
+        if (!_.has(this.styleProperties, id)) { this.styleProperties[id] = {}; }
+
+        propertyChain = propertyChain.split(".");
+        var lastProperty = propertyChain.pop(),
+            currentRootObject = this.styleProperties[id];
+
+        _.each(propertyChain, function (property) {
+            currentRootObject = (currentRootObject[property] = {});
         });
-    } else {
-        Ti.API.error(TAG, "parseConfig failed with", definition, config);
+
+        /* Finally, set the value as the last element of our tree */
+        currentRootObject[lastProperty] = value;
+    },
+
+    getAccessibleFunctions: function () {
+        /**
+         * Use to build an object of accessible functions from the outside.
+         * @return An object of all public/accessible functions
+         * */
+        /* Select all functions */
+        var _exports = _.omit(this.__proto__, 'getAccessibleFunctions', '_applyRule'),
+            self = this;
+        /* Then, wrap them into callable ... callers */
+        return _.object(_.map(_exports, function (accessibleFunction, name) {
+            return [name, function() { accessibleFunction.apply(self, arguments); }];
+        }));
+    },
+
+    reset: function () {
+        this.styleProperties = {};
+        this.rules = {};
     }
-    Ti.API.debug(TAG, "parseConfig processed styles", styles);
-    widget.updateViews(styles);
-    return config;
-}
+};
+
+/* Made the exports; For now, every functions inside the prototype are accessible.
+ * If public and private functions have to be defined, we may either use _.omit to
+ * omit private keys, or define a getExports in the prototype that returns all
+ * accessible functions.
+ * */
+var libWidgetInstance = new LibWidget();
+_.extend(exports, libWidgetInstance.getAccessibleFunctions());
