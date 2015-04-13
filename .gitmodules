@@ -1,3 +1,3 @@
 [submodule "app/widgets/rebel.TextArea"]
 	path = app/widgets/rebel.TextArea
-	url = git@github.com:PierreGUI/rebel.TextArea.git
+	url = https://github.com/PierreGUI/rebel.TextArea.git
