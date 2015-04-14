@@ -1,3 +1,7 @@
+/**
+ * @class LibWidget
+ * The library used to easily configure widgets. 
+ */
 var LibWidget = function () {
     this.TAG = "libWidget";
     this.reset();
@@ -5,11 +9,11 @@ var LibWidget = function () {
 
 LibWidget.prototype = {
     _applyRule: function (ruleId, inputValue) {
-        /**
+        /*
          * Apply a rule once the input value is known.
-         * @param {str} ruleId The rule's public identifier; should correspond to a previously
+         * @param {string} ruleId The rule's public identifier; should correspond to a previously
          *  defined rule.
-         * @param {str} inputValue The value read from the config file that has to be set.
+         * @param {string} inputValue The value read from the config file that has to be set.
          * @return {boolean} true if the rule exist and have been applied, false otherwise.
          * */
         /* Grab the related rule, which is an array of either properties or functions. */
@@ -44,6 +48,14 @@ LibWidget.prototype = {
     },
 
     parseAndApplyConfig: function (widget, config) {
+        /**
+         * @method parseAndApplyConfig
+         * Execute rules within the config context. 
+         * @param {Alloy.Controller} widget An instance to the related widget.
+         * @param {Object} config An object that describe the user config for the widget as
+         * described in a .tss file.
+         * @return {Object} The configuration minus keys handled as rules.
+         */
         Ti.API.debug(this.TAG, "parseConfig", config);
         if (_.isObject(config)) {
             _.each(config, function (value, key) {
@@ -60,9 +72,10 @@ LibWidget.prototype = {
 
     addRule: function (publicIdentifier, target) {
         /**
+        * @method addRule
         * Add a rule to the rules set;
-        * @param {str} publicIdentifier The id use to access an internal style property in the module
-        * @param {mixed} target The targeted property in the widget or a  process/function that
+        * @param {string} publicIdentifier The id use to access an internal style property in the module
+        * @param {Mixed} target The targeted property in the widget or a  process/function that
         *   would rather handle the property value into some special treatment instead of blindy bind
         *   it to a targetted identifier.
         * */
@@ -73,6 +86,7 @@ LibWidget.prototype = {
 
     addRules: function (rules) {
          /**
+         * @method addRules
          * Used to define several rules in one call. See addRule for more details.
          * @param {Object} rules All rules to define. Keys will be used as public identifier, and
          *  values as targets.
@@ -82,11 +96,12 @@ LibWidget.prototype = {
 
     setProperty: function (id, propertyChain, value) {
         /**
+         * @method setProperty
          * Add a new style property to the list.
-         * @param {str} id The property id, as referenced in the View.
-         * @param {str} propertyChain The property that have to be set. Might be a nested
+         * @param {string} id The property id, as referenced in the View.
+         * @param {string} propertyChain The property that have to be set. Might be a nested
          *  property such as my.nested.property
-         * @value {mixed} value The value that has to be set, str or Number.
+         * @param {Mixed} value The value that has to be set, str or Number.
          */
 
         /* Properties might be simple such as 'backgroundColor', or more complex such as
@@ -107,8 +122,9 @@ LibWidget.prototype = {
 
     getAccessibleFunctions: function () {
         /**
+         * @method getAccessibleFunctions
          * Use to build an object of accessible functions from the outside.
-         * @return An object of all public/accessible functions
+         * @return {Object} An object of all public/accessible functions
          * */
         /* Select all functions */
         var _exports = _.omit(this.__proto__, 'getAccessibleFunctions', '_applyRule'),
@@ -128,6 +144,12 @@ LibWidget.prototype = {
 /* Make the exports */
 _.extend(exports, {
     newInstance: function() {
+    /**
+     * @static
+     * @method newInstance
+     * Instantiate the library.
+     * return {LibWidget} An instance of the library
+     */
         var libWidgetInstance = new LibWidget();
         return libWidgetInstance.getAccessibleFunctions();
     }
