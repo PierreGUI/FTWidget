@@ -30,3 +30,4 @@ var libWidget = require("libWidget");
         return C; 
     };
 })(Alloy.createWidget, Alloy.createController);
+

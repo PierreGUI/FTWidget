@@ -1,7 +1,6 @@
 var LibWidget = function () {
     this.TAG = "libWidget";
-    this.styleProperties = {};
-    this.rules = {};
+    this.reset();
 };
 
 LibWidget.prototype = {
@@ -23,9 +22,18 @@ LibWidget.prototype = {
             Ti.API.debug(this.TAG, "Rule's target", target);
             /* Basic case, target is a string which represent the corresponding property to set */
             if (_.isString(target)) {
-                var elementId = target.match(/^(#[^\.]+)\./)[1],
-                    propertyChain = target.split(elementId)[1].substr(1);
-                this.setProperty(elementId, propertyChain, inputValue);
+                var elementId = target.match(/^(#[^\.]+)\.?/)[1];
+                if (_.isObject(inputValue)) {
+                    /* First case, the input is an object, so only the id considered */
+                    _.each(inputValue, function (propertyValue, propertyName) {
+                        this.setProperty(elementId, propertyName, propertyValue);
+                    }, this);
+                } else {
+                    /* The input is a value that should be assigned to the given property under the
+                     * given element id */
+                    var propertyChain = target.split(elementId)[1].substr(1);
+                    this.setProperty(elementId, propertyChain, inputValue);
+                }
             } else if (_.isFunction(target)) {
                 /* If the target is a function, then, just execute the function; The function should be
                  * in charge of declaring properties if any. */
@@ -35,7 +43,7 @@ LibWidget.prototype = {
         return true;
     },
 
-    parseConfig: function (widget, config) {
+    parseAndApplyConfig: function (widget, config) {
         Ti.API.debug(this.TAG, "parseConfig", config);
         if (_.isObject(config)) {
             _.each(config, function (value, key) {
@@ -45,9 +53,8 @@ LibWidget.prototype = {
             Ti.API.error(this.TAG, "parseConfig failed with", config);
         }
         Ti.API.debug(this.TAG, "parseConfig processed styles", this.styleProperties);
-        Ti.API.error(this.TAG, JSON.stringify(this.styleProperties));
+        Ti.API.debug(this.TAG, JSON.stringify(this.styleProperties));
         widget.updateViews(this.styleProperties);
-        this.reset();
         return config;
     },
 
@@ -118,10 +125,10 @@ LibWidget.prototype = {
     }
 };
 
-/* Made the exports; For now, every functions inside the prototype are accessible.
- * If public and private functions have to be defined, we may either use _.omit to
- * omit private keys, or define a getExports in the prototype that returns all
- * accessible functions.
- * */
-var libWidgetInstance = new LibWidget();
-_.extend(exports, libWidgetInstance.getAccessibleFunctions());
+/* Make the exports */
+_.extend(exports, {
+    newInstance: function() {
+        var libWidgetInstance = new LibWidget();
+        return libWidgetInstance.getAccessibleFunctions();
+    }
+});

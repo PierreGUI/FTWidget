@@ -31,17 +31,17 @@
 "#profile": {
     top: 20,
 	left: 10, right: 10,
-    name: {
+    title: {
 		text: "Profile tile",
 		color: "#2980b9",
 		font: {
-			"fontSize": 12,
+			"fontSize": 18,
 			"fontFamily": "Helvetica Neue"
 		}
 	},
     description: "Sample tile giving details about user.\nOr that could be a chat bubble!",
     image: "http://www.clostridia.net/clospore/images/Blank_profile_male.jpg",
-	roundImage: true,
+	roundImage: false,
 	borderColor: "#dbe0e0",
 	separatorColor: "#dbe0e0"
 	/*backgroundColor: "#ecf0f1",*/

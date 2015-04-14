@@ -1,6 +1,6 @@
 var args = arguments[0],
     TAG = "ProfileTile",
-    libWidget = require("libWidget");
+    libWidget = require("libWidget").newInstance();
 
 _.extend(this, {
     // these styles must be translated into real tss
@@ -12,6 +12,7 @@ _.extend(this, {
         // TODO: call librairie function with arguments:
         // container, config, defi
         libWidget.addRules({
+            "title": "#name", 
             "description": "#description.text",
             "image": "#avatar.image",
             "separatorColor": "#separator.backgroundColor",
@@ -19,13 +20,8 @@ _.extend(this, {
             "roundImage": function(isRounded) {
                 libWidget.setProperty("#avatar", "borderRadius", isRounded ? 25 : 0);
             },
-            "name": function(values) {
-              libWidget.setProperty("#name", "text", values.text);
-              libWidget.setProperty("#name", "color", values.color);
-              libWidget.setProperty("#name", "font", values.font);
-            }
         });
-        $.container.applyProperties(libWidget.parseConfig(this, config));
+        $.container.applyProperties(libWidget.parseAndApplyConfig(this, config));
 
         // TEST: write rules from TSS (pb: functions)
         // var def = $.createStyle({

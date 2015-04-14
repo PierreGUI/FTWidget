@@ -1,6 +1,6 @@
 var args = arguments[0],
     TAG = "ProfileTile",
-    libWidget = require("libWidget");
+    libWidget = require("libWidget").newInstance();
 
 _.extend(this, {
     // these styles must be translated into real tss
@@ -23,7 +23,7 @@ _.extend(this, {
                 $.message.setHintText(value);
             }
         });
-        $.container.applyProperties(libWidget.parseConfig(this, config));
+        $.container.applyProperties(libWidget.parseAndApplyConfig(this, config));
 
         // TEST: write rules from TSS (pb: functions)
         // var def = $.createStyle({
