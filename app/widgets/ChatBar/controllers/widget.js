@@ -1,6 +1,6 @@
 var args = arguments[0],
     TAG = "ProfileTile",
-    libWidget = require("libWidget");
+    libWidget = require("libWidget").newInstance();
 
 _.extend(this, {
     // these styles must be translated into real tss
@@ -10,21 +10,20 @@ _.extend(this, {
     // TODO: move definition to TSS?
     // TODO: use TSS in definition?
     // TODO: auto comprehension for buttonTitle -> #button.title
-    definition: {
-        "maxHeight": "#message.maxHeight",
-        "buttonTitle": "#send.title",
-        "separatorColor": "#separator.backgroundColor",
-        "fieldRadius": "#message.borderRadius",
-        "hintText": function(value) {
-            $.message.setHintText(value);
-            return [];
-        },
-    },
 
     construct: function( config ) {
         // TODO: call librairie function with arguments:
         // container, config, definitions
-        $.container.applyProperties(libWidget.parseConfig(this, config, $.definition));
+        libWidget.addRules({
+            "maxHeight": "#message.maxHeight",
+            "buttonTitle": "#send.title",
+            "separatorColor": "#separator.backgroundColor",
+            "fieldRadius": "#message.borderRadius",
+            "hintText": function(value) {
+                $.message.setHintText(value);
+            }
+        });
+        $.container.applyProperties(libWidget.parseAndApplyConfig(this, config));
 
         // TEST: write rules from TSS (pb: functions)
         // var def = $.createStyle({
